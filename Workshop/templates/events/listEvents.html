@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<table class=""table table-strped mt-5>
+<table class="table table-strped mt-5">
     <tr>
         <td>Title</td>
         <td>Description</td>
@@ -11,7 +11,7 @@
     <tr>
         <td>{{ event.title}}</td>
         <td>{{ event.description}}</td>
-        <td><img src="{{ event.imageEvent.url }}" alt=""></td>
+        <td><img src="{{ event.imageEvent.url }}" class="img-fluid w-50" alt=""></td>
         <td> {{event.organizer}}</td>
     </tr>
     {% endfor %}
