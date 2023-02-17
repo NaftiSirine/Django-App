@@ -56,7 +56,7 @@ ROOT_URLCONF = 'Workshop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'Workshop/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

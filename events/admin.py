@@ -20,7 +20,7 @@ class ParticipationFilter(admin.SimpleListFilter):
         if self.value() == 'more' :
             return queryset.filter(nbParticipants__gt=0)
 # exact et gt  : lookups = where nbr par 0 
-
+# participation inline
 class ParticipationInline(admin.TabularInline):
     model = Participation
     extra = 1
