@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from .models import *
 from django.http import HttpResponse
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,CreateView
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from .models import *
+from .forms import *
 # Create your views here.
 def homePage(request):
     return HttpResponse('<h1>Title Here</h1>')
@@ -53,3 +57,44 @@ class EventListView(ListView):
 
 class EventDetails(DetailView):
     model = Event
+
+def addEvent(request):
+    form = EventForm()
+    if request.method == 'POST':
+        form = EventForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            Event.objects.create(
+                title= form.cleaned_data.get('title'),
+                description= form.cleaned_data['description'],
+                
+            )
+            return redirect('listV')
+        
+    return render(
+        request,
+        'events/event_add.html',
+        {
+            'form': form,
+        }
+    )        
+def add_Event(request):
+    form = EventModelForm()
+    if request.method == 'POST':
+        form = EventModelForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('listV')
+        
+    return render(
+        request,
+        'events/event_add.html',
+        {
+            'form': form,
+        }
+    )            
+class EventCreateView(CreateView):
+    model = Event
+    form_class= EventModelForm
+    success_url= reverse_lazy('listV')
