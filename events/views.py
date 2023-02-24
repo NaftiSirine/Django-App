@@ -85,7 +85,7 @@ def add_Event(request):
 
         if form.is_valid():
             form.save()
-            return redirect('listV')
+            return redirect('Events_listV')
         
     return render(
         request,
@@ -97,4 +97,5 @@ def add_Event(request):
 class EventCreateView(CreateView):
     model = Event
     form_class= EventModelForm
-    success_url= reverse_lazy('listV')
+    template_name='events/event_add.html'
+    success_url= reverse_lazy('Events_listV')
