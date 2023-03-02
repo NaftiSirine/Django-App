@@ -11,6 +11,9 @@ urlpatterns =[
     # pk with the class primary key 
     path('detailV/<int:pk>', EventDetails.as_view(), name="Event_detailsV"),
     path('addEvent/', addEvent, name="add_event"),
+    path('updateEvent/<int:pk>', EventUpdateView.as_view(), name="update_event"),
+    path('deleteEvent/<int:pk>', EventDeleteView.as_view(), name="delete_event"),
+
     path('addEventV/', add_Event, name="add_eventV"),
     path('addEventV2/', EventCreateView.as_view(), name="add_eventV2")
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from django.http import HttpResponse
-from django.views.generic import ListView,DetailView,CreateView
+from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import *
@@ -18,14 +18,17 @@ def homePage1(request):
 def listEventsStatic(request):
     list= [
         {
+            'id': 1,
             'title': 'Event 1',
             'description':'description 1 ',
         },
         {
+            'id': 15,
             'title':'Event 2',
             'description': 'description 2',
         },
         {
+            'id': 12,
             'title':'Event 3',
             'description':'description 3',
         }
@@ -65,11 +68,10 @@ def addEvent(request):
 
         if form.is_valid():
             Event.objects.create(
-                title= form.cleaned_data.get('title'),
-                description= form.cleaned_data['description'],
+                **form.cleaned_data
                 
             )
-            return redirect('listV')
+            return redirect('Events_listV')
         
     return render(
         request,
@@ -77,7 +79,8 @@ def addEvent(request):
         {
             'form': form,
         }
-    )        
+    )     
+  
 def add_Event(request):
     form = EventModelForm()
     if request.method == 'POST':
@@ -99,3 +102,11 @@ class EventCreateView(CreateView):
     form_class= EventModelForm
     template_name='events/event_add.html'
     success_url= reverse_lazy('Events_listV')
+class EventUpdateView(UpdateView):
+    model = Event
+    form_class = EventModelForm
+    success_url = reverse_lazy('Events_listV')
+    template_name = 'events/event_add.html'
+class EventDeleteView(DeleteView):
+    model = Event
+    success_url = reverse_lazy('Events_listV')
