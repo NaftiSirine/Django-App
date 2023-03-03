@@ -58,9 +58,9 @@ class EventListView(ListView):
     model = Event
     template_name = 'events/listEvents.html'
     context_object_name = 'events'
-    queryset= Event.objects.filter(state=True)
-    def get_queryset(self):
-        return Event.objects.filter(state=True)
+    #queryset= Event.objects.filter(state=True)
+    #def get_queryset(self):
+        #return Event.objects.filter(state=True)
 
 class EventDetails(DetailView):
     model = Event
