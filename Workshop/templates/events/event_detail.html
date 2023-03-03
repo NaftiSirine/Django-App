@@ -16,7 +16,8 @@
   </div>
   <h6>Organizer : <span>{{event.organizer}} </span></h6> 
       <p class="card-text">{{event.description}}</p>
-    
+      <a  class="btn btn-success  mt-1" href="{% url 'participate_event' event.id %}"> Participate</a>
+
     
 
     </div>

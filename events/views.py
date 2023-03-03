@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import *
 from .forms import *
+from django.contrib import messages 
 # Create your views here.
 def homePage(request):
     return HttpResponse('<h1>Title Here</h1>')
@@ -57,6 +58,9 @@ class EventListView(ListView):
     model = Event
     template_name = 'events/listEvents.html'
     context_object_name = 'events'
+    queryset= Event.objects.filter(state=True)
+    def get_queryset(self):
+        return Event.objects.filter(state=True)
 
 class EventDetails(DetailView):
     model = Event
@@ -96,7 +100,21 @@ def add_Event(request):
         {
             'form': form,
         }
-    )            
+    )      
+def deleteEvent(request,id):
+    event = Event.objects.get(id=id)
+    if event.delete():
+        return redirect('Events_listV')
+
+
+    return render(
+        request,
+        'events/event_confirm_delete.html',
+        {
+            'event': event,
+        }
+    )      
+
 class EventCreateView(CreateView):
     model = Event
     form_class= EventModelForm
@@ -110,3 +128,20 @@ class EventUpdateView(UpdateView):
 class EventDeleteView(DeleteView):
     model = Event
     success_url = reverse_lazy('Events_listV')
+    template_name = 'events/event_confirm_delete.html'
+def Participate(request, id):
+    event = Event.objects.get(id=id)
+    person=Person.objects.get(email='sirine.nafti@esprit.tn')
+    if Participation.objects.filter(person=person,event=event).count() == 0 :
+
+        Participation.objects.create(person=person,event=event)
+        event.nbParticipants+=1
+        event.save()
+        messages.add_message(request,messages.SUCCESS,f'Your participation to this event : {event.title} was added')
+    else:
+        messages.add_message(request,messages.ERROR,f'You r already participating to this event : {event.title} ')
+
+    # method 2: 
+    #nb = event.event.nbParticipants + 1
+    #Event.objects.filter(id=id).update(nbParticipants=nb)
+    return redirect('Events_listV')
